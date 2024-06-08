@@ -34,24 +34,6 @@ def evaluate_at_point(f, df_dx, df_du, df_dt, x, u, t, x0, u0, t0):
 def linearize_function(f_0, df_dx_0, df_du_0, df_dt_0, x, u, t, x0, u0, t0):
     return f_0 + (x - x0) * df_dx_0 + (u - u0) * df_du_0 + (t - t0) * df_dt_0
 
-def plot_function(f, f_lin, x_vals, u_val, t_val, x0, f_0, sym_x, sym_u, sym_t):
-    f_np = lambdify((sym_x, sym_u, sym_t), f, 'numpy')
-    f_lin_np = lambdify((sym_x, sym_u, sym_t), f_lin, 'numpy')
-
-    f_vals = f_np(x_vals, u_val, t_val)
-    f_lin_vals = f_lin_np(x_vals, u_val, t_val)
-
-    plt.plot(x_vals, f_vals, label='f(x,u,t)', linestyle='-', color='blue')
-    plt.plot(x_vals, f_lin_vals, label='linearized f(x,u,t)', linestyle='--', color='red')
-    plt.axvline(x0, color='black', linestyle=':')
-    plt.axhline(f_0, color='black', linestyle=':')
-    plt.legend()
-    plt.xlabel('x')
-    plt.ylabel('f(x,u,t)')
-    plt.title('Function and its Linearization')
-    plt.grid()
-    plt.show()
-
 def ode_system(f_np, x0, t_vals, u_func):
     def system(x, t):
         u = u_func(t)
@@ -114,9 +96,7 @@ def main():
     x_vals = np.linspace(x0 - range_size, x0 + range_size, 100)
     u_vals = np.linspace(u0 - range_size, u0 + range_size, 100)
     t_vals = np.linspace(0, 10, 100)
-
-    plot_function(f, f_lin, x_vals, u0, t0, x0, f_0, x, u, t)
-    plot_integrated_functions(f_np, f_lin_np, x0-range_size, t_vals)
+    plot_integrated_functions(f_np, f_lin_np, x0, t_vals)
 
 if __name__ == "__main__":
     main()
